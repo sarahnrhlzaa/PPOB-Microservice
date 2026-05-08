@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Data user contoh (password: "password123" di-hash dengan BCrypt)
+-- Data user contoh (john_doe: "john123", jane_doe: "jane123")
 INSERT INTO users (username, password, full_name, balance) VALUES
-('john_doe', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'John Doe', 500000.00),
-('jane_doe', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Jane Doe', 1000000.00);
+('john_doe', '$2b$12$9q3wBdm.aUthcu6Fnh3zs.nb7geEZUjJXFW8tcNia8V5dEB/9iUTW', 'John Doe', 500000.00),
+('jane_doe', '$2b$12$TZG5BEwlW4kZAGoos1WJ9uq.spjnJUBD28uma4Q2XoBLGwaAM/4fm', 'Jane Doe', 1000000.00);
