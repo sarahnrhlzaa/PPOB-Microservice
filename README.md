@@ -117,8 +117,8 @@ Tabel dibuat otomatis saat pertama kali `docker compose up` dijalankan melalui f
 
 | Username | Password | Saldo |
 |---|---|---|
-| john_doe | password123 | Rp 500.000 |
-| jane_doe | password123 | Rp 1.000.000 |
+| john_doe | john123 | Rp 500.000 |
+| jane_doe | jane123 | Rp 1.000.000 |
 
 ---
 
@@ -193,7 +193,7 @@ Menggunakan **Request-Reply Pattern** dengan **Correlation ID**:
   "correlationId": "550e8400-e29b-41d4-a716-446655440000",
   "eventType": "AUTH_REQUEST",
   "username": "john_doe",
-  "password": "password123",
+  "password": "john123",
   "timestamp": "2025-01-01T10:00:00"
 }
 ```
@@ -394,7 +394,7 @@ Content-Type: application/json
 
 {
   "username": "john_doe",
-  "password": "password123"
+  "password": "john123"
 }
 ```
 
@@ -560,7 +560,7 @@ Content-Type: application/json
 # 1. Login
 curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"john_doe","password":"password123"}'
+  -d '{"username":"john_doe","password":"john123"}'
 
 # Simpan token dari response di atas, lalu:
 TOKEN="token-dari-response-login"
