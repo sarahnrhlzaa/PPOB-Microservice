@@ -28,6 +28,11 @@ public class RabbitMQConfig {
     @Value("${ppob.rabbitmq.reply-queue.profile-reply}")        private String profileReplyQueue;
     @Value("${ppob.rabbitmq.reply-queue.logout-reply}")         private String logoutReplyQueue;
 
+    @Value("${ppob.rabbitmq.routing-key.auth-request}")         private String authRequestRoutingKey;
+    @Value("${ppob.rabbitmq.routing-key.payment-request}")      private String paymentRequestRoutingKey;
+    @Value("${ppob.rabbitmq.routing-key.profile-request}")      private String profileRequestRoutingKey;
+    @Value("${ppob.rabbitmq.routing-key.logout-request}")       private String logoutRequestRoutingKey;
+
     @Value("${ppob.rabbitmq.routing-key.auth-reply}")           private String authReplyRoutingKey;
     @Value("${ppob.rabbitmq.routing-key.payment-reply}")        private String paymentReplyRoutingKey;
     @Value("${ppob.rabbitmq.routing-key.profile-reply}")        private String profileReplyRoutingKey;
@@ -44,6 +49,16 @@ public class RabbitMQConfig {
     @Bean public Queue paymentReplyQueue() { return QueueBuilder.durable(paymentReplyQueue).build(); }
     @Bean public Queue profileReplyQueue() { return QueueBuilder.durable(profileReplyQueue).build(); }
     @Bean public Queue logoutReplyQueue()  { return QueueBuilder.durable(logoutReplyQueue).build(); }
+
+    @Bean public Binding authRequestBinding()    { return BindingBuilder.bind(authRequestQueue()).to(ppobExchange()).with(authRequestRoutingKey); }
+    @Bean public Binding paymentRequestBinding() { return BindingBuilder.bind(paymentRequestQueue()).to(ppobExchange()).with(paymentRequestRoutingKey); }
+    @Bean public Binding profileRequestBinding() { return BindingBuilder.bind(profileRequestQueue()).to(ppobExchange()).with(profileRequestRoutingKey); }
+    @Bean public Binding logoutRequestBinding()  { return BindingBuilder.bind(logoutRequestQueue()).to(ppobExchange()).with(logoutRequestRoutingKey); }
+
+    @Bean public Binding authReplyBinding()    { return BindingBuilder.bind(authReplyQueue()).to(ppobExchange()).with(authReplyRoutingKey); }
+    @Bean public Binding paymentReplyBinding() { return BindingBuilder.bind(paymentReplyQueue()).to(ppobExchange()).with(paymentReplyRoutingKey); }
+    @Bean public Binding profileReplyBinding() { return BindingBuilder.bind(profileReplyQueue()).to(ppobExchange()).with(profileReplyRoutingKey); }
+    @Bean public Binding logoutReplyBinding()  { return BindingBuilder.bind(logoutReplyQueue()).to(ppobExchange()).with(logoutReplyRoutingKey); }
 
     @Bean
     public MessageConverter jsonMessageConverter() {
