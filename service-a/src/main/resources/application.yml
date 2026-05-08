@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: service-a
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:ppob_user}
+    password: ${RABBITMQ_PASS:ppob_pass}
+
+ppob:
+  rabbitmq:
+    exchange: ppob.exchange
+    queue:
+      auth-request: auth.request.queue
+      payment-request: payment.request.queue
+      profile-request: profile.request.queue
+      logout-request: logout.request.queue
+    reply-queue:
+      auth-reply: auth.reply.queue
+      payment-reply: payment.reply.queue
+      profile-reply: profile.reply.queue
+      logout-reply: logout.reply.queue
+    routing-key:
+      auth-request: auth.request
+      payment-request: payment.request
+      profile-request: profile.request
+      logout-request: logout.request
+      auth-reply: auth.reply
+      payment-reply: payment.reply
+      profile-reply: profile.reply
+      logout-reply: logout.reply
+  messaging:
+    reply-timeout-ms: 10000

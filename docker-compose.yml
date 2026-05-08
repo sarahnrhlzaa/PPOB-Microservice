@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ppob-rabbitmq
+    ports:
+      - "5672:5672"       # AMQP port
+      - "15672:15672"     # Management UI (buka di browser: localhost:15672)
+    environment:
+      RABBITMQ_DEFAULT_USER: ppob_user
+      RABBITMQ_DEFAULT_PASS: ppob_pass
+    networks:
+      - ppob-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: ppob-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ppob_db
+      MYSQL_USER: ppob_user
+      MYSQL_PASSWORD: ppob_pass
+    volumes:
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+    networks:
+      - ppob-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ppob-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ppob-network
+
+  service-a:
+    build: ./service-a
+    container_name: ppob-service-a
+    ports:
+      - "8080:8080"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ppob_user
+      RABBITMQ_PASS: ppob_pass
+    depends_on:
+      - rabbitmq
+    networks:
+      - ppob-network
+
+  service-b:
+    build: ./service-b
+    container_name: ppob-service-b
+    ports:
+      - "8081:8081"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ppob_user
+      RABBITMQ_PASS: ppob_pass
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ppob_db
+      DB_USER: ppob_user
+      DB_PASS: ppob_pass
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - rabbitmq
+      - mysql
+      - redis
+    networks:
+      - ppob-network
+
+networks:
+  ppob-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

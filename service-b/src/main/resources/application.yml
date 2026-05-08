@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: service-b
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:ppob_user}
+    password: ${RABBITMQ_PASS:ppob_pass}
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:ppob_db}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USER:ppob_user}
+    password: ${DB_PASS:ppob_pass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+ppob:
+  rabbitmq:
+    exchange: ppob.exchange
+    queue:
+      auth-request: auth.request.queue
+      payment-request: payment.request.queue
+      profile-request: profile.request.queue
+      logout-request: logout.request.queue
+    reply-queue:
+      auth-reply: auth.reply.queue
+      payment-reply: payment.reply.queue
+      profile-reply: profile.reply.queue
+      logout-reply: logout.reply.queue
+    routing-key:
+      auth-request: auth.request
+      payment-request: payment.request
+      profile-request: profile.request
+      logout-request: logout.request
+      auth-reply: auth.reply
+      payment-reply: payment.reply
+      profile-reply: profile.reply
+      logout-reply: logout.reply
+  token:
+    expiry-seconds: 86400
