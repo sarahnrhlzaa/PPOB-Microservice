@@ -41,6 +41,7 @@ services:
   service-a:
     build: ./service-a
     container_name: ppob-service-a
+    restart: on-failure
     ports:
       - "8080:8080"
     environment:
@@ -56,6 +57,7 @@ services:
   service-b:
     build: ./service-b
     container_name: ppob-service-b
+    restart: on-failure
     ports:
       - "8081:8081"
     environment:
