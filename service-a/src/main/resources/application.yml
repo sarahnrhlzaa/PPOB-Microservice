@@ -9,6 +9,11 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USER:ppob_user}
     password: ${RABBITMQ_PASS:ppob_pass}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
 
 ppob:
   rabbitmq:

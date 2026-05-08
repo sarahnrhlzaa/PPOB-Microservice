@@ -6,6 +6,9 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +45,13 @@ public class RabbitMQConfig {
     @Bean public Queue profileReplyQueue() { return QueueBuilder.durable(profileReplyQueue).build(); }
     @Bean public Queue logoutReplyQueue()  { return QueueBuilder.durable(logoutReplyQueue).build(); }
 
-    @Bean public MessageConverter jsonMessageConverter() { return new Jackson2JsonMessageConverter(); }
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return new Jackson2JsonMessageConverter(mapper);
+    }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
